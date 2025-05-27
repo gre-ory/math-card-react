@@ -1,0 +1,18 @@
+{
+  "add": {
+    "min": 2,
+    "max": 20
+  },
+  "substract": {
+    "min": 2,
+    "max": 20
+  },
+  "multiply": {
+    "min": 2,
+    "max": 9
+  },
+  "divide": {
+    "min": 2,
+    "max": 9
+  }
+}
