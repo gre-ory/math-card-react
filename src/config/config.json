@@ -1,11 +1,11 @@
 {
   "add": {
-    "min": 1,
-    "max": 99
+    "min": 2,
+    "max": 20
   },
   "substract": {
-    "min": 1,
-    "max": 99
+    "min": 2,
+    "max": 20
   },
   "multiply": {
     "min": 2,
