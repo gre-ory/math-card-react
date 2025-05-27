@@ -1,0 +1,92 @@
+.selection-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: var(--app-width);
+}
+
+.selection-screen h2 {
+  text-align: left;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 400px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+select, input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* small {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+} */
+
+.start-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-button:hover {
+  background-color: #45a049;
+}
+
+.start-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.collections-grid {
+  --grid-gap:10px;
+  --grid-width: calc(var(--app-width) - (2 * var(--grid-gap)));
+  width: calc(var(--app-width) - var(--grid-gap));
+  padding: var(--grid-gap) 0 var(--grid-gap) var(--grid-gap);
+  margin: 0;
+}
+
+.collection-card {
+    display: inline-block;
+    vertical-align:top;
+    /* height: 300px; */
+    margin-right: var(--grid-gap);
+    margin-bottom: var(--grid-gap);
+}
+
+@media (max-width: 300px) {
+  .collection-card {
+    width: var(--grid-width);
+  }
+}
+
+@media (min-width: 301px) and (max-width: 600px) {
+  .collection-card {
+    width: calc((var(--grid-width) - var(--grid-gap))/2);
+  }
+}
+
+@media (min-width: 601px) {
+  .collection-card {
+    width: calc((var(--grid-width) - 2 * var(--grid-gap))/3);
+  }
+}
