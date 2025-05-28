@@ -5,11 +5,12 @@ import Stats from '../types/Stats';
 
 type SelectionScreenProps = {
   stats: Stats,
+  onViewSettings: () => void, 
   onViewStats: () => void,
   onStartQuiz: (numberOfQuestions: number) => void
 }
 
-function SelectionScreen({ stats, onViewStats, onStartQuiz }: SelectionScreenProps) {
+function SelectionScreen({ stats, onViewSettings, onViewStats, onStartQuiz }: SelectionScreenProps) {
   return (
     <div className="selection-screen">
       <div className="collections-grid">
@@ -17,7 +18,8 @@ function SelectionScreen({ stats, onViewStats, onStartQuiz }: SelectionScreenPro
           key="math"
           stats={stats}
           onSelect={onStartQuiz}
-          onView={onViewStats}
+          onViewSettings={onViewSettings}
+          onViewStats={onViewStats}
         />
       </div>
     </div>

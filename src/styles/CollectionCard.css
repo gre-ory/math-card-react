@@ -114,6 +114,14 @@
   --button-back-color: var(--color-gray);
 }
 
+.view-button.settings {
+  right: 50px;
+}
+
+.view-button.stats {
+  right: 10px;
+}
+
 .question-count-button {
   flex-grow: 1;
   --button-h-padding: 20px;

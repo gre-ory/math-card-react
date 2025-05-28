@@ -8,10 +8,11 @@ type CollectionCardProps = {
   key: string,
   stats: Stats,
   onSelect: (count: number) => void,
-  onView: () => void
+  onViewStats: () => void,
+  onViewSettings: () => void
 }
 
-function CollectionCard({ stats, onSelect, onView }: CollectionCardProps) {
+function CollectionCard({ stats, onSelect, onViewStats, onViewSettings }: CollectionCardProps) {
 
   // Available question count options
   const questionOptions = [10, 20, 30, 40, 50, 60, 70, 80, 90];
@@ -22,8 +23,15 @@ function CollectionCard({ stats, onSelect, onView }: CollectionCardProps) {
         <h3>Math</h3>
 
         <button 
-          className="view-button"
-          onClick={() => onView()}
+          className="view-button settings"
+          onClick={() => onViewSettings()}
+        >
+          &#x1F4C1;
+        </button>
+
+        <button 
+          className="view-button stats"
+          onClick={() => onViewStats()}
         >
           &#x1F441;
         </button>
