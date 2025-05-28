@@ -1,27 +1,36 @@
 
 export type JsonConfig = {
+  study: JsonStudyConfig,
   add: JsonAddConfig,
   substract: JsonSubstractConfig,
   multiply: JsonMultiplyConfig,
   divide: JsonDivideConfig
 }
 
+export type JsonStudyConfig = {
+  weight: number
+}
+
 export type JsonAddConfig = {
+  weight: number,
   min: number,
   max: number
 }
 
 export type JsonSubstractConfig = {
+  weight: number,
   min: number,
   max: number
 }
 
 export type JsonMultiplyConfig = {
+  weight: number,
   min: number,
   max: number
 }
 
 export type JsonDivideConfig = {
+  weight: number,
   min: number,
   max: number
 }

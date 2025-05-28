@@ -1,0 +1,60 @@
+
+.settings-header {
+  text-align: center;
+  margin-bottom: 40px;
+  line-height: 40px;
+  width: 100%;
+}
+
+.settings-header .button-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  --button-back-color: var(--color-gray);
+}
+
+.settings-row fieldset {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.settings-row {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.settings-row legend {
+  padding: 10px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.settings-row label {
+  /* flex-grow: 1; */
+  width: 10%;
+  height: 20px;
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.settings-row input {
+  /* flex-grow: 1; */
+  width: 15%;
+  height: 20px;
+  display: inline-block;
+}
+
+.settings-row input.error {
+  color: red;
+  border-color: red;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+  background-color: rgba(255, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}

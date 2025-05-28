@@ -1,17 +1,24 @@
 {
+  "study": {
+    "weight": 4
+  },
   "add": {
+    "weight": 1,
     "min": 2,
     "max": 20
   },
   "substract": {
+    "weight": 1,
     "min": 2,
     "max": 20
   },
   "multiply": {
+    "weight": 1,
     "min": 2,
     "max": 9
   },
   "divide": {
+    "weight": 1,
     "min": 2,
     "max": 9
   }
