@@ -10,7 +10,8 @@
   "substract": {
     "weight": 1,
     "min": 2,
-    "max": 20
+    "max": 20,
+    "delta": 3
   },
   "multiply": {
     "weight": 1,

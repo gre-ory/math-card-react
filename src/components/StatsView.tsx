@@ -222,6 +222,8 @@ function StatsView({ stats, onClose }: StatsViewProps) {
                   <td>{questionStats.getAvgTimeSeconds()}s</td>
                   <td>{questionStats.group}</td>
                   <td>{questionStats.getWeight()}</td>
+                  {/* <td>{questionStats.getGroupWeight()}</td>
+                  <td>{questionStats.getTimeWeight()}</td> */}
                 </tr>
               })
             ) : (

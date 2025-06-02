@@ -3,52 +3,92 @@ import Stats from "./Stats";
 import { JsonConfig, JsonAddConfig, JsonSubstractConfig, JsonMultiplyConfig, JsonDivideConfig } from "./Json";
 
 // //////////////////////////////////////////////////
-// helper
+// question
 
-export function NewQuestion(cfg: JsonConfig): Question {
-  switch (randomNumber(1,4)) {
-    case 1:
-      return NewAddQuestion(cfg.add);
-    case 2:
-      return NewSubstractQuestion(cfg.substract);
-    case 3:
-      return NewMultiplyQuestion(cfg.multiply);
-    default:
-      return NewDivideQuestion(cfg.divide);
+export function NewStudyQuestion(question: string): Question {
+  const matchAdd = AddRegex.exec(question)
+  if ( matchAdd && matchAdd.groups ) {
+    const a = parseInt(matchAdd.groups.a as string);
+    const b = parseInt(matchAdd.groups.b as string);
+    return NewAddQuestion(a, b);
   }
-}
-
-export function NewAddQuestion(cfg: JsonAddConfig): Question {
-  const a = randomNumber(cfg.min, cfg.max);
-  const b = randomNumber(cfg.min, cfg.max);
-  const term = new Question(`add`, `${a} + ${b}`, (a + b).toString());
-  return term;
-}
-
-export function NewSubstractQuestion(cfg: JsonSubstractConfig): Question {
-  const a = randomNumber(cfg.min, cfg.max);
-  const b = randomNumber(cfg.min, cfg.max);
-  if (b > a) {
-    const term = new Question(`substract`, `${b} - ${a}`, (b - a).toString());
-    return term;
+  const matchSubstract = SubstractRegex.exec(question)
+  if ( matchSubstract && matchSubstract.groups ) {
+    const a = parseInt(matchSubstract.groups.a as string);
+    const b = parseInt(matchSubstract.groups.b as string);
+    return NewSubstractQuestion(a, b);
   }
-  const term = new Question(`substract`, `${a} - ${b}`, (a - b).toString());
-  return term;
+  const matchMultiply = MultiplyRegex.exec(question)
+  if ( matchMultiply && matchMultiply.groups ) {
+    const a = parseInt(matchMultiply.groups.a as string);
+    const b = parseInt(matchMultiply.groups.b as string);
+    return NewMultiplyQuestion(a, b);
+  }
+  const matchDivide = DivideRegex.exec(question)
+  if ( matchDivide && matchDivide.groups ) {
+    const a = parseInt(matchDivide.groups.a as string);
+    const b = parseInt(matchDivide.groups.b as string);
+    return NewDivideQuestion(a, b);
+  }
+  throw new Error(`Unknown question format: ${question}`);
 }
 
-export function NewMultiplyQuestion(cfg: JsonMultiplyConfig): Question {
+export function NewAddQuestionFromConfig(cfg: JsonAddConfig): Question {
   const a = randomNumber(cfg.min, cfg.max);
   const b = randomNumber(cfg.min, cfg.max);
-  const term = new Question(`multiply`, `${a} * ${b}`, (a * b).toString());
-  return term;
+  return NewAddQuestion(a, b);
 }
 
-export function NewDivideQuestion(cfg: JsonDivideConfig): Question {
+const AddRegex = /^(?<a>\d+) \+ (?<b>\d+)$/;
+
+function NewAddQuestion(a: number, b: number): Question {
+  return new Question(`add`, `${a} + ${b}`, (a + b).toString());
+}
+
+export function NewSubstractQuestionFromConfig(cfg: JsonSubstractConfig): Question {
+  const a = randomNumber(cfg.min + cfg.delta, cfg.max);
+  const b = randomNumber(cfg.min, a - cfg.delta);
+  return NewSubstractQuestion(a, b);
+}
+
+const SubstractRegex = /^(?<a>\d+) \- (?<b>\d+)$/;
+
+function NewSubstractQuestion(a: number, b: number): Question {
+  if (a < b) {
+    throw new Error(`Invalid substraction: ${a} - ${b}`);
+  }
+  return new Question(`substract`, `${a} - ${b}`, (a - b).toString());
+}
+
+export function NewMultiplyQuestionFromConfig(cfg: JsonMultiplyConfig): Question {
+  const a = randomNumber(cfg.min, cfg.max);
+  const b = randomNumber(cfg.min, cfg.max);
+  return NewMultiplyQuestion(a, b);
+}
+
+const MultiplyRegex = /^(?<a>\d+) \* (?<b>\d+)$/;
+
+function NewMultiplyQuestion(a: number, b: number): Question {
+  return new Question(`multiply`, `${a} * ${b}`, (a * b).toString());
+}
+
+export function NewDivideQuestionFromConfig(cfg: JsonDivideConfig): Question {
   const a = randomNumber(cfg.min, cfg.max);
   const b = randomNumber(cfg.min, cfg.max);
   const multiply = a * b;
-  const term = new Question(`divide`, `${multiply} / ${a}`, (b).toString());
-  return term;
+  return NewDivideQuestion(multiply, b);
+}
+
+const DivideRegex = /^(?<a>\d+) \/ (?<b>\d+)$/;
+
+function NewDivideQuestion(a: number, b: number): Question {
+  if (a < b) {
+    throw new Error(`Invalid division: ${a} / ${b}`);
+  }
+  if (b === 0) {
+    throw new Error(`Division by zero is not allowed`);
+  }
+  return new Question(`divide`, `${a} / ${b}`, (a / b).toString());
 }
 
 function randomNumber(min: number, max: number): number {

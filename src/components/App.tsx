@@ -33,13 +33,17 @@ function App() {
   const loadStats = () => {
     const stats = new Stats();  
     const rawStats = localStorage.getItem(StatsKey) || '';
+    // console.log(`[loadStats] rawStats = `, rawStats);
     if (rawStats !== '') {
       const jsonStats: JsonStats = JSON.parse(rawStats);
+      // console.log(`[loadStats] jsonStats = `, jsonStats);
       jsonStats.forEach((jsonQuestionStats: JsonQuestionStats) => {
         const questionStats = stats.getStats(jsonQuestionStats.id);
         questionStats.load(jsonQuestionStats);
       });
     }
+    // console.log(`[loadStats] stats = `, stats);
+    saveStats(stats); // Ensure stats are saved to localStorage
     return stats;
   }
   
@@ -52,12 +56,13 @@ function App() {
     return configData;
   }
 
-  // save stats to localStorage whenever they change
-  useEffect(() => {
-    saveStats(stats);
-  }, [stats]);
+  // // save stats to localStorage whenever they change
+  // useEffect(() => {
+  //   saveStats(stats);
+  // }, [stats]);
 
   const saveStats = (stats:Stats) => {
+    // console.log(`[saveStats] stats = `, stats)
     if (stats) {
       localStorage.setItem(StatsKey, JSON.stringify(stats.toJson()));
     } else {
@@ -66,7 +71,7 @@ function App() {
   }
 
   const saveConfig = (config:JsonConfig) => {
-    console.log(`[saveConfig] config = `, config)
+    // console.log(`[saveConfig] config = `, config)
     if (config) {
       localStorage.setItem(ConfigKey, JSON.stringify(config));
     } else {
@@ -76,7 +81,6 @@ function App() {
 
   const onStartQuiz = (questionCount) => {
     const quizz = new Quizz(config, questionCount, stats);
-    quizz.selectRandomQuestions();
     setQuizz(quizz);
     setNumberOfQuestions(questionCount);
     setCurrentScreen('quiz');
@@ -120,6 +124,7 @@ function App() {
     return wrap(
       <QuizScreen 
         quizz={quizz}
+        onStats={saveStats}
         onClose={onCloseQuiz}
       />
     );

@@ -20,7 +20,8 @@ export type JsonAddConfig = {
 export type JsonSubstractConfig = {
   weight: number,
   min: number,
-  max: number
+  max: number,
+  delta: number // minimum difference between a and b
 }
 
 export type JsonMultiplyConfig = {
