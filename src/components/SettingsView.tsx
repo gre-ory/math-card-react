@@ -28,6 +28,8 @@ function SettingsView({ config, onUpdate, onClose }: SettingsViewProps) {
   const [substractWeightClass,setSubstractWeightClass] = useState('');
   const [substractMin,setSubstractMin] = useState(config.substract.min);
   const [substractMinClass,setSubstractMinClass] = useState('');
+  const [substractDelta,setSubstractDelta] = useState(config.substract.delta);
+  const [substractDeltaClass,setSubstractDeltaClass] = useState('');
   const [substractMax,setSubstractMax] = useState(config.substract.max);
   const [substractMaxClass,setSubstractMaxClass] = useState('');
   const [multiplyWeight,setMultiplyWeight] = useState(config.multiply.weight);
@@ -141,6 +143,17 @@ function SettingsView({ config, onUpdate, onClose }: SettingsViewProps) {
       setSubstractMinClass('');
     } else {
       setSubstractMinClass('error');
+    }
+  }
+
+  const onSubstractDelta = (value: string) => {
+    const delta = sanitizeMin(value, config.substract.max - config.substract.min - 1);
+    if (delta !== undefined) {
+      config.substract.delta = delta;
+      onconfig(config);
+      setSubstractDeltaClass('');
+    } else {
+      setSubstractDeltaClass('error');
     }
   }
 
@@ -300,6 +313,16 @@ function SettingsView({ config, onUpdate, onClose }: SettingsViewProps) {
             defaultValue={config.substract.min}
             onChange={(e) => onSubstractMin(e.target.value)}
             className={`min-input ${substractMinClass}`}
+          />
+
+          <label htmlFor="substract-delta">Delta</label>
+          <input
+            id="substract-delta"
+            type="text"
+            placeholder="Delta..."
+            defaultValue={config.substract.delta}
+            onChange={(e) => onSubstractDelta(e.target.value)}
+            className={`delta-input ${substractDeltaClass}`}
           />
           
           <label htmlFor="substract-max">Max</label>

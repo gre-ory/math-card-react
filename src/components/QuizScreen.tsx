@@ -6,13 +6,15 @@ import Question from '../types/Question';
 import Quizz from '../types/Quizz';
 
 import '../styles/QuizScreen.css';
+import Stats from '../types/Stats';
 
 type QuizScreenProps = {
   quizz: Quizz,
+  onStats: (stats: Stats) => void,
   onClose: () => void,
 }
 
-function QuizScreen({ quizz, onClose }: QuizScreenProps) {
+function QuizScreen({ quizz, onStats, onClose }: QuizScreenProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [nbSuccess, setNbSuccess] = useState(0);
   const [nbFailure, setNbFailure] = useState(0);
@@ -42,6 +44,7 @@ function QuizScreen({ quizz, onClose }: QuizScreenProps) {
       setResult([...result,false]);
       currentQuestion.onIncorrect(quizz.stats, ms);
     }
+    onStats(quizz.stats);
     
     // Move to next question or finish
     setTimeout(onNextQuestion, 300);
