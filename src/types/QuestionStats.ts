@@ -70,8 +70,8 @@ class QuestionStats {
     // term is well known >>> weight = 1
     const knownWeight = 1;
     const knownTime = 500;
-    // term is not known >>> weight = 4
-    const unknownWeight = 4;
+    // term is not known >>> weight = 16
+    const unknownWeight = 16;
     const unknownTime = 2000;
     var ms = this.getAvgTime();
     ms = Math.max(ms,knownTime);

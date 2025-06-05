@@ -24,7 +24,7 @@ function StatsView({ stats, onClose }: StatsViewProps) {
     } else {
       const search = searchTerm.toLowerCase().trim();
       const filtered = keys.filter((key: string) => 
-        key.toLowerCase().includes(search)
+        key.toLowerCase().includes(search) || `${eval(key)}`.includes(search)
       );
       setFilteredKeys(filtered);
     }
@@ -166,11 +166,14 @@ function StatsView({ stats, onClose }: StatsViewProps) {
       <div className="collection-table-container">
         <table className="collection-table">
           <thead>
-            <tr>              
+            <tr>
               <th 
                 className={getThStyle('key')} 
                 onClick={() => toggleOrder('key')}>
                   key
+              </th>
+              <th> 
+                  value
               </th>
               <th 
                 className={getThStyle('correct')} 
@@ -216,6 +219,7 @@ function StatsView({ stats, onClose }: StatsViewProps) {
                 const questionStats = stats.getStats(key);
                 return <tr key={`${index}`}>
                   <td>{key}</td>
+                  <td>{eval(key)}</td>
                   <td>{questionStats.correct}</td>
                   <td>{questionStats.incorrect}</td>
                   <td>{questionStats.getSuccessRate()}%</td>
@@ -228,7 +232,7 @@ function StatsView({ stats, onClose }: StatsViewProps) {
               })
             ) : (
               <tr>
-                <td colSpan="7" className="no-results">
+                <td colSpan="8" className="no-results">
                   {searchTerm ? 'Not found' : 'Empty'}
                 </td>
               </tr>

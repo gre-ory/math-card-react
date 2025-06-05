@@ -1,5 +1,6 @@
 import QuestionStats from "./QuestionStats";
 import { JsonStats } from "./Json";
+import Question from "./Question";
 
 class Stats {
   stats: Map<string,QuestionStats>
@@ -52,13 +53,14 @@ class Stats {
   // //////////////////////////////////////////////////
   // select
 
-  selectRandomQuestions(count: number): string[] {
+  selectRandomQuestions(count: number, selecteds: Question[]): string[] {
     const questions = new Array<string>();
     const weights = new Array<number>();
     var totalWeight: number = 0;
     // loop on map
     for (const [question, questionStats] of this.stats.entries()) {
-      const questionWeight = questionStats.getWeight();
+      const alreadySelected = selecteds.find((selected: Question) => selected.question === question);
+      const questionWeight = alreadySelected ? 0 : questionStats.getWeight();
       totalWeight += questionWeight;
       // console.log(`[prepare] (+) question ${question} / questionWeight ${questionWeight} / totalWeight ${totalWeight}`);
       questions.push(question);
@@ -68,6 +70,9 @@ class Stats {
     // select count random numbers up to sumWeight
     const selectedQuestions = new Array<string>();
     for (let i = 0; i < count; i++) {
+      if  ( totalWeight < 1 ) {
+        break;
+      }
       var random = Math.floor(Math.random() * (totalWeight - 1)) + 1;
       // find the first weight that is greater than the random number
       var questionIndex: number = 0;
