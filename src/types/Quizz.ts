@@ -28,16 +28,9 @@ class Quizz {
 
   selectRandomQuestions() {
     console.log(` ###### select ${this.nbQuestion} random questions`)
-    const selectors = new Array<(number) => Question[]>();
+    const selectors = new Array<(count: number, selected: Question[]) => Question[]>();
     const selectorWeights = new Array<number>();
     const selectorCounts = new Array<number>();
-
-    if (this.stats.stats.size > this.nbQuestion) {
-      console.log(` (+) study: weight=${this.cfg.study.weight}`)
-      selectors.push(this.selectStudyQuestions.bind(this));
-      selectorWeights.push(this.cfg.study.weight);
-      selectorCounts.push(0);
-    }
 
     console.log(` (+) add: weight=${this.cfg.add.weight}`)
     selectors.push(this.selectAddQuestions.bind(this));
@@ -58,6 +51,14 @@ class Quizz {
     selectors.push(this.selectDivideQuestions.bind(this));
     selectorWeights.push(this.cfg.divide.weight);
     selectorCounts.push(0);
+
+    // add it at the end to select studied questions not already selected
+    if (this.stats.stats.size > this.nbQuestion) {
+      console.log(` (+) study: weight=${this.cfg.study.weight}`)
+      selectors.push(this.selectStudyQuestions.bind(this));
+      selectorWeights.push(this.cfg.study.weight);
+      selectorCounts.push(0);
+    }
 
     var totalWeight = 0;
     for (let i = 0; i < selectorWeights.length; i++) {
@@ -88,7 +89,7 @@ class Quizz {
       const selectorCount = selectorCounts[i];
       if (selectorCount > 0) {
         const selector = selectors[i];
-        const questions = selector(selectorCount);
+        const questions = selector(selectorCount, selectedQuestions);
         selectedQuestions.push(...questions);
       }
     }
@@ -99,9 +100,9 @@ class Quizz {
     console.log(` >>> ${this.questions.length} questions selected`)
   }
 
-  selectStudyQuestions(count: number): Question[] {
+  selectStudyQuestions(count: number, selecteds: Question[]): Question[] {
     console.log(` ### ${count} study questions`)
-    const values = this.stats.selectRandomQuestions(count);
+    const values = this.stats.selectRandomQuestions(count, selecteds);
     const questions: Question[] = [];
     for (const value of values) {
       const question = NewStudyQuestion(value);
@@ -111,48 +112,69 @@ class Quizz {
     return questions;
   }
 
-  selectAddQuestions(count: number): Question[] {
+  selectAddQuestions(count: number, selecteds: Question[]): Question[] {
     console.log(` ### ${count} add questions`)
     const questions: Question[] = [];
-    for (let i = 0; i < count; i++) {
-      const question = NewAddQuestionFromConfig(this.cfg.add);
-      console.log(` (+) add >>> ${question.question}`)
-      questions.push(question);
+    var tryCount: number = 0;
+    while (questions.length < count && tryCount < 250) {
+      tryCount++;
+      const created = NewAddQuestionFromConfig(this.cfg.add);
+      if ( this.isUnique(created, questions) && this.isUnique(created, selecteds) ) {
+        console.log(` (+) add >>> ${created.question}`)
+        questions.push(created);
+      }
     }
     return questions;
   }
 
-  selectSubstractQuestions(count: number): Question[] {
+  selectSubstractQuestions(count: number, selecteds: Question[]): Question[] {
     console.log(` ### ${count} substract questions`)
     const questions: Question[] = [];
-    for (let i = 0; i < count; i++) {
-      const question = NewSubstractQuestionFromConfig(this.cfg.substract);
-      console.log(` (+) substract >>> ${question.question}`)
-      questions.push(question);
+    var tryCount: number = 0;
+    while (questions.length < count && tryCount < 250) {
+      tryCount++;
+      const created = NewSubstractQuestionFromConfig(this.cfg.substract);
+      if ( this.isUnique(created, questions) && this.isUnique(created, selecteds) ) {
+        console.log(` (+) substract >>> ${created.question}`)
+        questions.push(created);
+      }
     }
     return questions;
   }
 
-  selectMultiplyQuestions(count: number): Question[] {
+  selectMultiplyQuestions(count: number, selecteds: Question[]): Question[] {
     console.log(` ### ${count} multiply questions`)
     const questions: Question[] = [];
-    for (let i = 0; i < count; i++) {
-      const question = NewMultiplyQuestionFromConfig(this.cfg.multiply);
-      console.log(` (+) multiply >>> ${question.question}`)
-      questions.push(question);
+    var tryCount: number = 0;
+    while (questions.length < count && tryCount < 250) {
+      tryCount++;
+      const created = NewMultiplyQuestionFromConfig(this.cfg.multiply);
+      if ( this.isUnique(created, questions) && this.isUnique(created, selecteds) ) {
+        console.log(` (+) multiply >>> ${created.question}`)
+        questions.push(created);
+      }
     }
     return questions;
   }
 
-  selectDivideQuestions(count: number): Question[] {
+  selectDivideQuestions(count: number, selecteds: Question[]): Question[] {
     console.log(` ### ${count} divide questions`)
     const questions: Question[] = [];
-    for (let i = 0; i < count; i++) {
-      const question = NewDivideQuestionFromConfig(this.cfg.divide);
-      console.log(` (+) divide >>> ${question.question}`)
-      questions.push(question);
+    var tryCount: number = 0;
+    while (questions.length < count && tryCount < 250) {
+      tryCount++;
+      const created = NewDivideQuestionFromConfig(this.cfg.divide);
+      if ( this.isUnique(created, questions) && this.isUnique(created, selecteds) ) {
+        console.log(` (+) divide >>> ${created.question}`)
+        questions.push(created);
+      }
     }
     return questions;
+  }
+
+  isUnique(question: Question, others: Question[]): boolean {
+    const found = others.find((other: Question) => other.question === question.question);
+    return !found;
   }
 
 }
