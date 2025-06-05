@@ -73,7 +73,12 @@ select, input {
     margin-bottom: var(--grid-gap);
 }
 
-@media (max-width: 300px) {
+.collection-card {
+  margin-top: 50px;
+  width: 250px;
+}
+
+/* @media (max-width: 300px) {
   .collection-card {
     width: var(--grid-width);
   }
@@ -89,4 +94,4 @@ select, input {
   .collection-card {
     width: calc((var(--grid-width) - 2 * var(--grid-gap))/3);
   }
-}
+} */
