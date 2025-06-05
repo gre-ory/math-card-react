@@ -170,10 +170,10 @@ function StatsView({ stats, onClose }: StatsViewProps) {
               <th 
                 className={getThStyle('key')} 
                 onClick={() => toggleOrder('key')}>
-                  key
+                  op
               </th>
               <th> 
-                  value
+                  =
               </th>
               <th 
                 className={getThStyle('correct')} 
@@ -218,8 +218,8 @@ function StatsView({ stats, onClose }: StatsViewProps) {
               currentKeys.map((key: string, index: number) => {
                 const questionStats = stats.getStats(key);
                 return <tr key={`${index}`}>
-                  <td>{key}</td>
-                  <td>{eval(key)}</td>
+                  <td align="left">{key}</td>
+                  <td align="left">{eval(key)}</td>
                   <td>{questionStats.correct}</td>
                   <td>{questionStats.incorrect}</td>
                   <td>{questionStats.getSuccessRate()}%</td>
